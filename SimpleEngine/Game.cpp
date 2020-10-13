@@ -2,8 +2,12 @@
 #include "TileMap.h"
 #include "Character.h"
 
-TileMap map;
 Character character;
+
+Game::~Game()
+{
+	delete map;
+}
 
 void Game::init(const char* title, int positionX, int positionY, int width, int height, bool fullScreen)
 {
@@ -17,19 +21,18 @@ void Game::init(const char* title, int positionX, int positionY, int width, int 
 		if (renderer)
 		{
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-			map = TileMap(renderer);
-			character = Character(renderer);
+			map = new TileMap(renderer);
+			// character = Character(renderer);
 		}
 
 		isRunning = true;
 	}
 	else {
+		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
 		isRunning = false;
 	}
 }
 
-// TODO: fix jerkiness in movement
-// TODO: create keyboard component
 void Game::handleEvents()
 {
 	const int SPEED = 5;
@@ -73,14 +76,14 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	map.hasCollided(character);
+	//map.hasCollided(character);
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer);
-	map.Draw();
-	character.Draw();
+	map->Draw();
+	//character.Draw();
 	SDL_RenderPresent(renderer);
 }
 
@@ -89,4 +92,9 @@ void Game::clean()
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
+}
+
+bool Game::running()
+{
+	return isRunning;
 }

@@ -1,2 +1,7 @@
-﻿  TileMap.cpp
+﻿  Character.cpp
+  Game.cpp
+  TextureManager.cpp
+  TileMap.cpp
+  main.cpp
+  Generating Code...
   SimpleEngine.vcxproj -> C:\Users\Othman\source\repos\SimpleEngine\Debug\SimpleEngine.exe

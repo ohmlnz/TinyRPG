@@ -1,76 +1,100 @@
 #include "TileMap.h"
 #include "TextureManager.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
 
 TileMap::TileMap(SDL_Renderer* renderer)
 {
 	TileMap::renderer = renderer;
-	// TODO: Preload all assets in one loop
-	dirt = TextureManager::LoadTexture("assets/dirt.png", renderer);
-	water = TextureManager::LoadTexture("assets/water.png", renderer);
-	grass = TextureManager::LoadTexture("assets/grass.png", renderer);
+	world = TextureManager::LoadTexture("assets/maps/word.png", renderer);
+	Load("assets/maps/world.txt");
+}
+
+TileMap::~TileMap()
+{
+	delete[] indices;
+	delete[] solids;
 }
 
 void TileMap::Load(const char* filePath)
 {
-	// TODO: Read JSON file
+	std::ifstream inputFile;
+	
+	inputFile.open(filePath);
+
+	if (!inputFile)
+	{
+		std::cout << filePath << " does not exist" << std::endl;
+	}
+
+	inputFile >> mapWidth >> mapHeight;
+	
+	mapTotalBlocks = (mapWidth / BLOCK_SIZE) * (mapHeight / BLOCK_SIZE);
+	
+	indices = new int[mapTotalBlocks];
+	solids = new bool[mapTotalBlocks];
+
+	for (int i = 0; i < mapTotalBlocks; i++)
+	{
+		inputFile >> indices[i];
+		inputFile >> solids[i];
+	}
+
+	inputFile.close();
+	return;
 }
 
 void TileMap::Draw()
 {
-	SDL_Rect srcRect, destRect;
-	srcRect.x = srcRect.y = 0;
-	srcRect.w = srcRect.h = BLOCK_SIZE;
+	int tilesetWidth = 40;
 
-	destRect.w = destRect.h = BLOCK_SIZE;
-
-	for (int row = 0; row < nbRows; row++)
+	for (int i = 0; i < mapTotalBlocks / 2; i++)
 	{
-		for (int column = 0; column < nbColumns; column++)
+		if (indices[i] != -1)
 		{
-			int tile = defaultMap[row][column];
-			destRect.x = column * BLOCK_SIZE;
-			destRect.y = row * BLOCK_SIZE;
+			int srcX = indices[i] % tilesetWidth;
+			int srcY = indices[i] / tilesetWidth;
 
-			switch (tile)
-			{
-			case 1:
-				SDL_RenderCopy(renderer, dirt, &srcRect, &destRect);
-				break;
-			case 2:
-				SDL_RenderCopy(renderer, water, &srcRect, &destRect);
-				break;
-			case 3:
-				SDL_RenderCopy(renderer, grass, &srcRect, &destRect);
-				break;
-			}
+			int destX = i % (mapWidth / BLOCK_SIZE);
+			int destY = i / (mapWidth / BLOCK_SIZE);
+
+			SDL_Rect srcRect = { srcX * BLOCK_SIZE, srcY * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE };
+			SDL_Rect destRect = { destX * BLOCK_SIZE, destY * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE };
+
+			SDL_RenderCopy(renderer, world, &srcRect, &destRect);
 		}
 	}
 }
 
-bool TileMap::hasCollided(Character& character)
-{
-	if (character.getX() + 32 > nbColumns * BLOCK_SIZE)
-	{
-		character.setX(nbColumns * BLOCK_SIZE - 32);
-		return true;
-	}
-	else if (character.getX() < 0)
-	{
-		character.setX(0);
-		return true;
-	}
-	else if (character.getY() + 32 > nbRows * BLOCK_SIZE)
-	{
-		character.setY(nbRows * BLOCK_SIZE - 32);
-		return true;
-	}
-	else if (character.getY() < 0)
-	{
-		character.setY(0);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
+
+// TODO: collision should happen at the entity level
+//bool TileMap::hasCollided(Character& character)
+//{
+//	if (character.getX() + 32 > nbColumns * BLOCK_SIZE)
+//	{
+//		character.setX(nbColumns * BLOCK_SIZE - 32);
+//		return true;
+//	}
+//	else if (character.getX() < 0)
+//	{
+//		character.setX(0);
+//		return true;
+//	}
+//	else if (character.getY() + 32 > nbRows * BLOCK_SIZE)
+//	{
+//		character.setY(nbRows * BLOCK_SIZE - 32);
+//		return true;
+//	}
+//	else if (character.getY() < 0)
+//	{
+//		character.setY(0);
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}

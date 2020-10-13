@@ -1,8 +1,5 @@
 #include "Game.h"
 
-// TODO: fps setter
-// TODO: game object
-
 int main(int argc, char* argv[])
 {
 	const int FPS = 60;
