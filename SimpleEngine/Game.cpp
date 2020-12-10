@@ -2,11 +2,10 @@
 #include "TileMap.h"
 #include "Character.h"
 
-Character character;
-
 Game::~Game()
 {
 	delete map;
+	delete character;
 }
 
 void Game::init(const char* title, int positionX, int positionY, int width, int height, bool fullScreen)
@@ -22,7 +21,7 @@ void Game::init(const char* title, int positionX, int positionY, int width, int 
 		{
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 			map = new TileMap(renderer);
-			// character = Character(renderer);
+			character = new Character(renderer);
 		}
 
 		isRunning = true;
@@ -49,23 +48,23 @@ void Game::handleEvents()
 			{
 				case SDL_SCANCODE_W:
 				case SDL_SCANCODE_UP:
-					currentY = character.getY();
-					character.setY(currentY - SPEED);
+					currentY = character->getY();
+					character->setY(map, currentY - SPEED);
 					break;
 				case SDL_SCANCODE_A:
 				case SDL_SCANCODE_LEFT:
-					currentX = character.getX();
-					character.setX(currentX - SPEED);
+					currentX = character->getX();
+					character->setX(map, currentX - SPEED);
 					break;
 				case SDL_SCANCODE_S:
 				case SDL_SCANCODE_DOWN:
-					currentY = character.getY();
-					character.setY(currentY + SPEED);
+					currentY = character->getY();
+					character->setY(map, currentY + SPEED);
 					break;
 				case SDL_SCANCODE_D:
 				case SDL_SCANCODE_RIGHT:
-					currentX = character.getX();
-					character.setX(currentX + SPEED);
+					currentX = character->getX();
+					character->setX(map, currentX + SPEED);
 					break;
 				default:
 					break;
@@ -83,7 +82,7 @@ void Game::render()
 {
 	SDL_RenderClear(renderer);
 	map->Draw();
-	//character.Draw();
+	character->Draw();
 	SDL_RenderPresent(renderer);
 }
 

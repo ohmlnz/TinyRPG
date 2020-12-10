@@ -2,6 +2,7 @@
 
 #include "TileMap.h"
 #include "SDL.h"
+#include "Character.h"
 
 class Game
 {
@@ -19,4 +20,5 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	TileMap* map;
+	Character* character;
 };

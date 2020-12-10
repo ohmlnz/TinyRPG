@@ -9,7 +9,7 @@
 TileMap::TileMap(SDL_Renderer* renderer)
 {
 	TileMap::renderer = renderer;
-	world = TextureManager::LoadTexture("assets/maps/word.png", renderer);
+	world = TextureManager::LoadTexture("assets/maps/world.png", renderer);
 	Load("assets/maps/world.txt");
 }
 
@@ -49,8 +49,6 @@ void TileMap::Load(const char* filePath)
 
 void TileMap::Draw()
 {
-	int tilesetWidth = 40;
-
 	for (int i = 0; i < mapTotalBlocks / 2; i++)
 	{
 		if (indices[i] != -1)
@@ -68,33 +66,3 @@ void TileMap::Draw()
 		}
 	}
 }
-
-
-// TODO: collision should happen at the entity level
-//bool TileMap::hasCollided(Character& character)
-//{
-//	if (character.getX() + 32 > nbColumns * BLOCK_SIZE)
-//	{
-//		character.setX(nbColumns * BLOCK_SIZE - 32);
-//		return true;
-//	}
-//	else if (character.getX() < 0)
-//	{
-//		character.setX(0);
-//		return true;
-//	}
-//	else if (character.getY() + 32 > nbRows * BLOCK_SIZE)
-//	{
-//		character.setY(nbRows * BLOCK_SIZE - 32);
-//		return true;
-//	}
-//	else if (character.getY() < 0)
-//	{
-//		character.setY(0);
-//		return true;
-//	}
-//	else
-//	{
-//		return false;
-//	}
-//}
