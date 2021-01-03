@@ -2,6 +2,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "TileMap.h"
+#include "AnimationManager.h"
+#include <string>
 
 class Character
 {
@@ -15,11 +17,14 @@ public:
 	int getX() const;
 	int getY() const;
 	bool hasCollided(TileMap* map, int destX, int destY);
+	void changeDirection(const std::string& newDirection);
 private:
 	SDL_Texture* character;
 	SDL_Renderer* renderer;
-	int posX = 400;
-	int posY = 400;
+	AnimationManager animationHandler;
+	int posX = 0;
+	int posY = 0;
 	int width = 16;
 	int height = 16;
+	std::string direction;
 };

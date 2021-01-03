@@ -1,12 +1,14 @@
 #include "Character.h"
 #include "TextureManager.h"
 #include "TileMap.h"
+#include "AnimationManager.h"
 #include <iostream>
+#include <cmath>
 
 Character::Character(SDL_Renderer* renderer)
 {
 	this->renderer = renderer;
-	character = TextureManager::LoadTexture("assets/player.png", renderer);
+	character = TextureManager::LoadTexture("assets/character.png", renderer);
 }
 
 Character::~Character() {}
@@ -14,9 +16,10 @@ Character::~Character() {}
 void Character::Draw()
 {
 	SDL_Rect srcRect, destRect;
-	srcRect.x = srcRect.y = 0;
-	srcRect.w = srcRect.h = 16;
 
+	animationHandler.walkingAnimation(direction, srcRect);
+
+	srcRect.w = srcRect.h = 16;
 	destRect.w = destRect.h = 16;
 	destRect.x = posX;
 	destRect.y = posY;
@@ -56,16 +59,26 @@ int Character::getY() const
 
 bool Character::hasCollided(TileMap* map, int destX, int destY)
 {
-	// TODO: figure out why collision on farther right element is not working
-	int playerPosX = (destX / map->BLOCK_SIZE) + 1;
-	int playerPosY = (destY / map->BLOCK_SIZE) + 1;
+	int playerPosX = std::round(double(destX) / double(map->BLOCK_SIZE));
+	int playerPosY = std::round(double(destY) / double(map->BLOCK_SIZE));
 
 	int tileLocation = (playerPosY * (map->mapWidth / map->BLOCK_SIZE)) + playerPosX;
-	std::cout << tileLocation << std::endl;
+
 	if (map->solids[tileLocation] == 1)
 	{
 		return true;
 	}
 
 	return false;
+}
+
+void Character::changeDirection(const std::string& newDirection)
+{
+	if (newDirection == "idle")
+	{
+		animationHandler.frame = 1;
+		return;
+	}
+
+	direction = newDirection;
 }

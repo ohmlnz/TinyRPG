@@ -11,7 +11,6 @@ public:
 	~TileMap();
 	void Load(const char* filePath);
 	void Draw();
-	//bool hasCollided(Character &character);
 	const int tilesetWidth = 40;
 	int mapTotalBlocks;
 	int* indices = nullptr;

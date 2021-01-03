@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "TileMap.h"
 #include "Character.h"
+#include <iostream>
 
 Game::~Game()
 {
@@ -34,7 +35,7 @@ void Game::init(const char* title, int positionX, int positionY, int width, int 
 
 void Game::handleEvents()
 {
-	const int SPEED = 5;
+	const int SPEED = 7;
 	int currentX, currentY;
 	SDL_PollEvent(&event);
 
@@ -46,36 +47,40 @@ void Game::handleEvents()
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.scancode)
 			{
-				case SDL_SCANCODE_W:
 				case SDL_SCANCODE_UP:
 					currentY = character->getY();
 					character->setY(map, currentY - SPEED);
+					character->changeDirection("up");
 					break;
-				case SDL_SCANCODE_A:
 				case SDL_SCANCODE_LEFT:
 					currentX = character->getX();
 					character->setX(map, currentX - SPEED);
+					character->changeDirection("left");
 					break;
-				case SDL_SCANCODE_S:
 				case SDL_SCANCODE_DOWN:
 					currentY = character->getY();
 					character->setY(map, currentY + SPEED);
+					character->changeDirection("down");
 					break;
-				case SDL_SCANCODE_D:
 				case SDL_SCANCODE_RIGHT:
 					currentX = character->getX();
 					character->setX(map, currentX + SPEED);
+					character->changeDirection("right");
 					break;
 				default:
 					break;
 			}
+			break;
+		case SDL_KEYUP:
+			character->changeDirection("idle");
+		default:
 			break;
 	}
 }
 
 void Game::update()
 {
-	//map.hasCollided(character);
+	// handles updates
 }
 
 void Game::render()

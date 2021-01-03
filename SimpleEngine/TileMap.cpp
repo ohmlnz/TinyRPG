@@ -49,7 +49,7 @@ void TileMap::Load(const char* filePath)
 
 void TileMap::Draw()
 {
-	for (int i = 0; i < mapTotalBlocks / 2; i++)
+	for (int i = 0; i < mapTotalBlocks; i++)
 	{
 		if (indices[i] != -1)
 		{
