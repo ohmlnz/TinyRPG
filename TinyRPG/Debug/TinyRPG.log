@@ -1,11 +1,2 @@
 ﻿  AnimationManager.cpp
-  AssetsManager.cpp
-  Character.cpp
-c:\users\othman\source\repos\tinyrpg\tinyrpg\character.cpp(62): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\othman\source\repos\tinyrpg\tinyrpg\character.cpp(63): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  Game.cpp
-  TileMap.cpp
-  main.cpp
-  Generating Code...
-c:\users\othman\source\repos\tinyrpg\tinyrpg\tilemap.cpp(152): warning C4715: 'TileMap::getTile': not all control paths return a value
   TinyRPG.vcxproj -> C:\Users\Othman\source\repos\TinyRPG\Debug\TinyRPG.exe
