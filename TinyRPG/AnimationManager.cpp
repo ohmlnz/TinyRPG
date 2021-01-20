@@ -116,6 +116,7 @@ void AnimationManager::walkingAnimation(const std::string& direction, SDL_Rect& 
 
 void AnimationManager::animateStatic(SDL_Renderer* renderer, SDL_Texture* world)
 {
+	// TODO: get all hardcoded values below dynamically
 	int tileId = animation[frame].tileid;
 	int srcX = tileId % 40;
 	int srcY = tileId / 40;
